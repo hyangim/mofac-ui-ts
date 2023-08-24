@@ -3,17 +3,17 @@ import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import { useCtprvnRltmMesureDnsty } from '../api/CtprvnRltmMesureDnsty';
-import StationListCombo from './StationListCombo';
+import { useMsrstnAcctoRltmMesureDnsty } from '../api/MsrstnAcctoRltmMesureDnsty';
+import StationListCombo from '../component/StationListCombo';
+import StationAirInfoList from '../component/StationAirInfoList';
 
-interface MainProps {
-  posts:string;
+
+interface StationProps {
   title: string;
 }
+function StationAirInfo(props: StationProps) {
+  const {title} = props;
 
-export default function Main(props: MainProps) {
-  const { posts, title } = props;
-   
   const [airInfo, setAirInfo] = useState({
     numOfRows: 100,
     pageNo: 1,
@@ -24,15 +24,18 @@ export default function Main(props: MainProps) {
   const {
     isLoading, 
     isError, 
-    data: airInfos 
-  } = useCtprvnRltmMesureDnsty( airInfo );
+    data: stationAirInfos 
+  } = useMsrstnAcctoRltmMesureDnsty( airInfo );
 
-  function selStationPage(sido: string){
-    airInfo.sidoName = sido;
+  function selStationPage(_stationName: string){
+    setAirInfo({numOfRows: airInfo.numOfRows,
+                pageNo: airInfo.pageNo,
+                sidoName: airInfo.sidoName,
+                stationName: _stationName});
   }
 
   useEffect(()=>{
-    document.title = '대기정보';
+    document.title ='측정소별 대기오염 정보 조회';
     console.log("useEffect() 호출");
   },[]);
 
@@ -42,6 +45,10 @@ export default function Main(props: MainProps) {
   }
 
   if (isError) {
+    return <span>Error</span>
+  }
+
+  if(stationAirInfos===null){
     return <span>Error</span>
   }
 
@@ -59,18 +66,12 @@ export default function Main(props: MainProps) {
     >
       <Divider />   
       <div>{title}</div>
-      {/* <li>{posts}</li> */}
       <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selStationPage={selStationPage} />
-      <div>        
-        {airInfos?.map(function (airInfo: any, index: number) {
-            return (
-            <div key = {index}>                              
-                <span>{airInfo.sidoName}</span>
-                <span>{airInfo.stationName}</span>
-            </div>
-            );
-        })}
-      </div>
+      <StationAirInfoList _station={airInfo.stationName} />
+      
     </Grid>
   );
+
 }
+  
+  export default StationAirInfo;

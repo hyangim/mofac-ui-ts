@@ -4,16 +4,21 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { useCtprvnRltmMesureDnsty } from '../api/CtprvnRltmMesureDnsty';
-import StationListCombo from './StationListCombo';
+import StationListCombo from '../component/StationListCombo';
 
-interface MainProps {
-  posts:string;
+interface CityProps {
   title: string;
 }
 
-export default function Main(props: MainProps) {
-  const { posts, title } = props;
-   
+function CityAirInfo(props: CityProps) {
+
+  const {title} = props;
+  // const airInfo = {
+  //   numOfRows: 100,
+  //   pageNo: 1,
+  //   sidoName: '서울',
+  // }
+
   const [airInfo, setAirInfo] = useState({
     numOfRows: 100,
     pageNo: 1,
@@ -28,7 +33,11 @@ export default function Main(props: MainProps) {
   } = useCtprvnRltmMesureDnsty( airInfo );
 
   function selStationPage(sido: string){
-    airInfo.sidoName = sido;
+    setAirInfo({numOfRows: airInfo.numOfRows,
+      pageNo: airInfo.pageNo,
+      sidoName: sido,
+      stationName: airInfo.stationName});    
+    // airInfo.sidoName = sido;
   }
 
   useEffect(()=>{
@@ -60,7 +69,7 @@ export default function Main(props: MainProps) {
       <Divider />   
       <div>{title}</div>
       {/* <li>{posts}</li> */}
-      <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selStationPage={selStationPage} />
+      <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName}  selStationPage={selStationPage} />
       <div>        
         {airInfos?.map(function (airInfo: any, index: number) {
             return (
@@ -74,3 +83,5 @@ export default function Main(props: MainProps) {
     </Grid>
   );
 }
+  
+export default CityAirInfo;

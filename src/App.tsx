@@ -2,18 +2,20 @@ import React from 'react';
 import './App.css';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Route, Routes} from 'react-router-dom'
 import Box from '@mui/material/Box';
 import Main from './component/Main';
 import Header from './component/Header';
 import Footer from './component/Footer';
-
+import CityAirInfo from './routes/CityAirInfo';
+import StationAirInfo from './routes/StationAirInfo';
+import PageC from './routes/PageC';
 
 const sections = [
-  { title: '대기질 주간예보', url: '#' },
-  { title: '시도별 실시간 측정', url: '#' },
-  { title: 'Culture', url: '#' },
-  { title: 'Business', url: '#' },
-  { title: 'Travel', url: '#' },
+  { title: '주간예보', url: '/' },
+  { title: '시도별', url: '/CityAirInfo' },
+  { title: '측정소별', url: '/StationAirInfo' },
+  { title: 'Business', url: '/pageC' },
 ];
 
 
@@ -23,13 +25,13 @@ function App() {
     <Container maxWidth="sm">
       <CssBaseline />
       <Header title="대기 오염 정보를 제공합니다." sections={sections} />    
-      <Box sx={{ my: 4 }}>      
-      <Main title={sections[0].title} posts={posts} />
-        {/* <Typography variant="h4" component="h1" gutterBottom>
-          Material UI Create React App example in TypeScript
-        </Typography>
-        <ProTip />
-        <Copyright /> */}
+      <Box sx={{ my: 4 }}>  
+      <Routes>
+        <Route path="/" element = {<Main title={sections[0].title} posts={posts} />}></Route>
+        <Route path="/CityAirInfo" element = {<CityAirInfo  title={sections[1].title} />}></Route>
+        <Route path="/StationAirInfo" element = {<StationAirInfo title={sections[2].title} />}></Route>
+        <Route path="/pageC" element = {<PageC />}></Route>
+      </Routes>
       </Box>
       <Footer
         title="Footer"
@@ -37,22 +39,6 @@ function App() {
       /> 
     </Container>
 
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.tsx</code> and save to reload....
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
   );
 }
 

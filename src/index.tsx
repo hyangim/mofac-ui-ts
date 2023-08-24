@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
@@ -19,7 +20,9 @@ root.render(
     <ReactQueryDevtools initialIsOpen={true} />
     <ThemeProvider theme={theme}>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-      <App />   
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>        
     </ThemeProvider>,
   </QueryClientProvider>
 

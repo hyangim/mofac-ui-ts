@@ -38,6 +38,7 @@ export default function Footer(props: FooterProps) {
         >
           {description}
         </Typography>
+        <Copyright/>
       </Container>
     </Box>
   );
