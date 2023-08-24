@@ -6,15 +6,21 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+// export interface StaionProps {
+//   selStationPage: Function;
+// }
+
 export interface StaionProps {
   _sido: string,
   _station: string,
+  selSidoPage: Function,
   selStationPage: Function;
 }
 
 
-export default function StationListCombo({_sido, _station, selStationPage}: StaionProps) {  
-  //const sidoNames = ['전국', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주', '세종'];
+// export default function StationListCombo({selStationPage}: StaionProps) {  
+export default function StationListCombo({_sido, _station, selSidoPage, selStationPage}: StaionProps) {    
+ 
   const sidoNames = [
     { idx: 0, sidoName: '서울', sidoValue: '서울'},
     { idx: 0, sidoName: '부산', sidoValue: '부산'},
@@ -35,6 +41,8 @@ export default function StationListCombo({_sido, _station, selStationPage}: Stai
     { idx: 0, sidoName: '세종', sidoValue: '세종'},
   ];
   
+  // const [sido, setSido] = useState<string>('서울');
+  // const [station, setStation] = useState<string>('종로');
   const [sido, setSido] = useState<string>(_sido);
   const [station, setStation] = useState<string>(_station);
 
@@ -43,6 +51,14 @@ export default function StationListCombo({_sido, _station, selStationPage}: Stai
     isError, 
     data: stationInfos 
   } = useMsrstnInfoInqire( sido );
+
+  // const stationAirInfo = {
+  //   isLoading: false, 
+  //   isError: false, 
+  //   data: [] 
+  // };
+  
+  // stationAirInfo = useMsrstnInfoInqire( sido );
 
   useEffect(()=>{
     console.log("Station ListCombo useEffect() 호출");
@@ -58,12 +74,18 @@ export default function StationListCombo({_sido, _station, selStationPage}: Stai
   }
 
   const sidoHandleChange = (event: SelectChangeEvent) => {
-    setSido(event.target.value);    
+    setSido(event.target.value);
+    selSidoPage(event.target.value);
+    console.log('sidoHandleChange>setSido() sido:'+ sido+'event.target.value:'+event.target.value);    
   };
 
   const stationChange = (event: SelectChangeEvent) => {
     setStation(event.target.value);
-    selStationPage(event.target.value);
+    console.log('stationChange(sido):'+ sido) 
+    console.log('stationChange(station):'+ station) 
+    console.log('stationChange(event.target.value):'+ event.target.value) 
+    selStationPage(sido, event.target.value);
+    
   };
 
   return (

@@ -60,7 +60,7 @@ export default function Main(props: MainProps) {
       <Divider />   
       <div>{title}</div>
       {/* <li>{posts}</li> */}
-      <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selStationPage={selStationPage} />
+      {/* <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selStationPage={selStationPage} /> */}
       <div>        
         {airInfos?.map(function (airInfo: any, index: number) {
             return (

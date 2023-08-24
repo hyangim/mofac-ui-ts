@@ -7,9 +7,11 @@ import { useMsrstnAcctoRltmMesureDnsty } from '../api/MsrstnAcctoRltmMesureDnsty
 
 interface StaionProps {
     _station: string,
+    _init:boolean,
 }
 
-function StationAirInfoList({_station}: StaionProps) {
+function StationAirInfoList({_station, _init}: StaionProps) {
+
 
   const {
     isLoading, 
@@ -24,6 +26,12 @@ function StationAirInfoList({_station}: StaionProps) {
 
     console.log("StationAirInfoList useEffect() 호출");
   },[]);
+
+  if(_init){
+        
+    return <div>초기화되었습니다.</div>
+  }
+
 
   if (isLoading) {
     // return <span>Loading...</span>

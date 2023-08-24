@@ -19,6 +19,7 @@ function StationAirInfo(props: StationProps) {
     pageNo: 1,
     sidoName: '서울',
     stationName: '종로구',
+    init:false
   })
 
   const {
@@ -26,17 +27,29 @@ function StationAirInfo(props: StationProps) {
     isError, 
     data: stationAirInfos 
   } = useMsrstnAcctoRltmMesureDnsty( airInfo );
+  
+  function selSidoPage(sido:string){
+    console.log('selSidoPage:'+sido)
+    setAirInfo({numOfRows: airInfo.numOfRows,
+      pageNo: airInfo.pageNo,
+      sidoName: sido,
+      stationName: airInfo.stationName,
+      init:true
+    });
+  }
 
-  function selStationPage(_stationName: string){
+  function selStationPage(sido:string, station: string){
     setAirInfo({numOfRows: airInfo.numOfRows,
                 pageNo: airInfo.pageNo,
-                sidoName: airInfo.sidoName,
-                stationName: _stationName});
+                sidoName: sido,
+                stationName: station,
+                init:false
+              });
   }
 
   useEffect(()=>{
     document.title ='측정소별 대기오염 정보 조회';
-    console.log("useEffect() 호출");
+    console.log("StationAirInfo useEffect() 호출");
   },[]);
 
   if (isLoading) {
@@ -66,8 +79,9 @@ function StationAirInfo(props: StationProps) {
     >
       <Divider />   
       <div>{title}</div>
-      <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selStationPage={selStationPage} />
-      <StationAirInfoList _station={airInfo.stationName} />
+      {/* <StationListCombo selStationPage={selStationPage} /> */}
+      <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selSidoPage={selSidoPage} selStationPage={selStationPage} />
+      <StationAirInfoList _station={airInfo.stationName} _init={airInfo.init}/>
       
     </Grid>
   );

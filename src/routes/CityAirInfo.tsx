@@ -69,7 +69,7 @@ function CityAirInfo(props: CityProps) {
       <Divider />   
       <div>{title}</div>
       {/* <li>{posts}</li> */}
-      <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName}  selStationPage={selStationPage} />
+      {/* <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName}  selStationPage={selStationPage} /> */}
       <div>        
         {airInfos?.map(function (airInfo: any, index: number) {
             return (
