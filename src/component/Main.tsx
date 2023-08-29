@@ -4,7 +4,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { useCtprvnRltmMesureDnsty } from '../api/CtprvnRltmMesureDnsty';
-import StationListCombo from './StationListCombo';
 
 interface MainProps {
   posts:string;
@@ -20,7 +19,7 @@ export default function Main(props: MainProps) {
     sidoName: '서울',
     stationName: '종로구',
   })
-
+  
   const {
     isLoading, 
     isError, 
@@ -30,6 +29,13 @@ export default function Main(props: MainProps) {
   function selStationPage(sido: string){
     airInfo.sidoName = sido;
   }
+
+  navigator.geolocation.getCurrentPosition(function(pos){
+  console.log(pos);
+  var latitude = pos.coords.latitude;
+  var longitude = pos.coords.longitude;
+  alert("현재 위치는 : " + latitude + ", "+ longitude);
+  });
 
   useEffect(()=>{
     document.title = '대기정보';

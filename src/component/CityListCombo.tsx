@@ -6,53 +6,32 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {sidoNames} from '../common/global';
+// export interface StaionProps {
+//   selStationPage: Function;
+// }
 
-export interface StaionProps {
+export interface CityProps {
   _sido: string,
-  _station: string,
   selSidoPage: Function,
-  selStationPage: Function,
 }
 
-export default function StationListCombo({_sido, _station, selSidoPage, selStationPage}: StaionProps) {    
 
+// export default function StationListCombo({selStationPage}: StaionProps) {  
+export default function CityListCombo({_sido, selSidoPage}: CityProps) {    
+  
   const [sido, setSido] = useState<string>(_sido);
-  const [station, setStation] = useState<string>(_station);
-
-  const {
-    isLoading, 
-    isError, 
-    data: stationInfos 
-  } = useMsrstnInfoInqire( sido );
-
-
+  
   useEffect(()=>{
     console.log("Station ListCombo useEffect() 호출");
   },[]);
 
-  if (isLoading) {
-    // return <span>Loading...</span>
-    return <CircularProgress />
-  }
-
-  if (isError) {
-    return <span>Error</span>
-  }
-
+ 
   const sidoHandleChange = (event: SelectChangeEvent) => {
     setSido(event.target.value);
     selSidoPage(event.target.value);
     console.log('sidoHandleChange>setSido() sido:'+ sido+'event.target.value:'+event.target.value);    
   };
 
-  const stationChange = (event: SelectChangeEvent) => {
-    setStation(event.target.value);
-    console.log('stationChange(sido):'+ sido) 
-    console.log('stationChange(station):'+ station) 
-    console.log('stationChange(event.target.value):'+ event.target.value) 
-    selStationPage(sido, event.target.value);
-    
-  };
 
   return (
     <div>
@@ -71,22 +50,6 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
             );
         })}
       </Select>
-      </FormControl>
-      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="input-station-label">측정소</InputLabel>
-      <Select
-        labelId="sel-station-label"
-        id="station"
-        value={station}
-        label="지역"
-        onChange={stationChange}
-      >
-        {stationInfos?.map(function (info: any, index: number) {
-            return (
-              <MenuItem key={index} value={info.stationName}>{info.stationName}</MenuItem>
-            );
-        })}
-      </Select>           
       </FormControl>
     </div>
 

@@ -3,6 +3,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import HouseIcon from '@mui/icons-material/House';
 import RestoreIcon from "@mui/icons-material/Restore"; //주간예보
 import ApartmentIcon from '@mui/icons-material/Apartment'; //시도별
 import LocationOnIcon from "@mui/icons-material/LocationOn"; //측정소
@@ -20,8 +21,8 @@ interface HeaderProps {
 }
 
 const sections = [
-  { title: '주간예보', url: '/' , icon: 'RestoreIcon'},
-  { title: '시도별', url: '/CityAirInfo', icon: 'ApartmentIcon' },
+  { title: '주간예보', url: '/' , icon: 'HouseIcon'},
+  { title: '시도별s', url: '/CityAirInfo', icon: 'ApartmentIcon' },
   { title: '측정소별', url: '/StationAirInfo' , icon: 'LocationOnIcon'},
   { title: 'Business', url: '/pageC' , icon: 'AcUnitIcon'},
 ];
@@ -33,8 +34,8 @@ export default function Header(props: HeaderProps) {
 
   function getIcon(name:string){  
     switch(name){
-      case "RestoreIcon":
-        return <RestoreIcon/>;
+      case "HouseIcon":
+        return <HouseIcon/>;
       case "ApartmentIcon":
         return <ApartmentIcon/>;
       case "AirIcon":
@@ -49,7 +50,6 @@ export default function Header(props: HeaderProps) {
   }
 
   function handleClick(idx:number){
-    alert(sections[idx].url);
     navigate(sections[idx].url);
   }
 
@@ -67,62 +67,22 @@ export default function Header(props: HeaderProps) {
         >
           {title}
         </Typography>
-        {/* <IconButton>
-          <SearchIcon />
-        </IconButton>
-        <Button variant="outlined" size="small">
-          Sign up
-        </Button> */}
       </Toolbar>
       <Box sx={{ width: 500 }}>
       <BottomNavigation
         showLabels
         value={value}
         onChange={(event, newValue) => {
-          alert(newValue);
           setValue(newValue);
           handleClick(newValue);
         }}
       >
       {sections.map((section:any, idx:number) => (
-      //   <Link
-      //   color="inherit"
-      //   noWrap
-      //   key={idx}
-      //   variant="body2"
-      //   href={section.url}
-      //   sx={{ p: 1, flexShrink: 0 }}
-      //   onClick={menuChange}
-      //   underline="none"
-      // >
-        // <a href="section.url">
         <BottomNavigationAction label={section.title} icon={getIcon(section.icon)} >
         </BottomNavigationAction>
-        // </a>
-        // </Link>
       ))}
       </BottomNavigation>
     </Box>
-      {/* <Toolbar
-        component="nav"
-        variant="dense"
-        sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
-      >
-        {sections.map((section:any, idx:number) => (
-          <Link
-            color="inherit"
-            noWrap
-            key={idx}
-            variant="body2"
-            href={section.url}
-            sx={{ p: 1, flexShrink: 0 }}
-            onClick={menuChange}
-            underline="none"
-          >
-            {section.title}
-          </Link>
-        ))}
-      </Toolbar> */}
     </React.Fragment>
   );
 }

@@ -6,7 +6,6 @@ import Link from '@mui/material/Link';
 
 interface FooterProps {
   description: string;
-  title: string;
 }
 
 function Copyright() {
@@ -22,14 +21,11 @@ function Copyright() {
 }
 
 export default function Footer(props: FooterProps) {
-  const { description, title } = props;
+  const { description } = props;
 
   return (
     <Box component="footer" sx={{ bgcolor: 'background.paper', py: 6 }}>
       <Container maxWidth="lg">
-        <Typography variant="h6" align="center" gutterBottom>
-          {title}
-        </Typography>
         <Typography
           variant="subtitle1"
           align="center"

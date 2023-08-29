@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { useMsrstnAcctoRltmMesureDnsty } from '../api/MsrstnAcctoRltmMesureDnsty';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import {GRADE_TYPE} from '../common/global';
+import {gradeClasType} from '../common/util';
 
 interface StaionProps {
     _station: string,
@@ -21,7 +21,9 @@ interface StaionInfo{
   o3Grade: number,
   o3Value:String,
   khaiGrade:number,
-  khaiValue:String,  
+  khaiValue:String, 
+  pm10Grade:number,
+  pm10Value:String, 
   dataTime: String,
 }
 
@@ -36,20 +38,6 @@ function StationAirInfoList({_station, _init}: StaionProps) {
     pageNo: 1,
     stationName: _station} );
 
-    const gradeClasType = (grade:string, gbn:string) => {
-      switch (parseInt(grade)) {
-        case 1:
-          return gbn===null?GRADE_TYPE[1] : gbn+GRADE_TYPE[1];
-        case 2:
-          return gbn===null?GRADE_TYPE[2] : gbn+GRADE_TYPE[1];
-        case 3:
-          return gbn===null?GRADE_TYPE[3] : gbn+GRADE_TYPE[1];
-        case 4:
-          return gbn===null?GRADE_TYPE[4] : gbn+GRADE_TYPE[1];
-        default:
-          return "";
-      }
-    };
   useEffect(()=>{
 
     console.log("StationAirInfoList useEffect() 호출");
@@ -89,6 +77,8 @@ function StationAirInfoList({_station, _init}: StaionProps) {
       o3Value: airInfo.o3Value+gradeClasType(airInfo.o3Grade, '/'),
       khaiGrade: airInfo.khaiGrade,
       khaiValue: airInfo.khaiValue+gradeClasType(airInfo.khaiGrade, '/'),
+      pm10Grade: airInfo.pm10Grade,
+      pm10Value: airInfo.pm10Value+gradeClasType(airInfo.pm10Grade, '/'),
       dataTime: airInfo.dataTime,
       } ];
       Todos = newTodos;
@@ -101,6 +91,7 @@ function StationAirInfoList({_station, _init}: StaionProps) {
     { field: 'coValue', headerName: '일산화탄소(농도/지수)', width: 180 },
     { field: 'o3Value', headerName: '오존(농도/지수)', width: 180 }, 
     { field: 'khaiValue', headerName: '통합대기환경(수치/지수)', width: 180 },     
+    { field: 'pm10Value', headerName: '미세먼지(수치/지수)', width: 180 },   
     { field: 'dataTime', headerName: '측정일시', width: 180 }, 
   ];
 
@@ -114,7 +105,7 @@ function StationAirInfoList({_station, _init}: StaionProps) {
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={Todos} columns={columns} />
+        <DataGrid rows={Todos} columns={columns} rowHeight={25} hideFooter={true} />
     </div>
     //   <div> 
     //     <div key='00'>                              
