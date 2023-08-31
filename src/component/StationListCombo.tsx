@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useMsrstnInfoInqire } from '../api/MsrstnInfoInqire';
 import InputLabel from '@mui/material/InputLabel';
@@ -25,18 +25,16 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
     data: stationInfos 
   } = useMsrstnInfoInqire( sido );
 
-
-  useEffect(()=>{
-    console.log("Station ListCombo useEffect() 호출");
-  },[]);
-
   if (isLoading) {
     // return <span>Loading...</span>
     return <CircularProgress />
   }
-
+  
   if (isError) {
     return <span>Error</span>
+  }
+  if (stationInfos.response.body.items===null){
+    return <span>데이터 조회 실패</span>
   }
 
   const sidoHandleChange = (event: SelectChangeEvent) => {
@@ -81,7 +79,7 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
         label="지역"
         onChange={stationChange}
       >
-        {stationInfos?.map(function (info: any, index: number) {
+        {stationInfos.response.body.items?.map(function (info: any, index: number) {
             return (
               <MenuItem key={index} value={info.stationName}>{info.stationName}</MenuItem>
             );

@@ -1,3 +1,4 @@
+import { isNullishCoalesce } from 'typescript';
 import {GRADE_TYPE} from '../common/global';
 
 export const gradeClasType = (grade:string, gbn:string) => {
@@ -13,4 +14,26 @@ export const gradeClasType = (grade:string, gbn:string) => {
       default:
         return "";
     }
-  };
+ };
+
+
+ export const nvl = (value:string) => {
+  if(value !== null && value !== undefined) {
+    return value;
+  } else {
+    return '-';
+  }
+};
+
+export const getToday = () => {
+  let now = new Date();
+  let year = now.getFullYear();
+  let month = now.getMonth()+1;
+  let day = now.getDate();
+  if(month<10){
+    return year + '-' + 0+month + '-' + day;  
+  }else{
+    return year + '-' + month + '-' + day;  
+  }
+  
+};

@@ -78,7 +78,7 @@ export default function Header(props: HeaderProps) {
         }}
       >
       {sections.map((section:any, idx:number) => (
-        <BottomNavigationAction label={section.title} icon={getIcon(section.icon)} >
+        <BottomNavigationAction label={section.title} icon={getIcon(section.icon)} key={idx}>
         </BottomNavigationAction>
       ))}
       </BottomNavigation>

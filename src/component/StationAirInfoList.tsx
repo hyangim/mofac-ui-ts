@@ -1,8 +1,4 @@
-import { useEffect, useState } from 'react';
-import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import { useMsrstnAcctoRltmMesureDnsty } from '../api/MsrstnAcctoRltmMesureDnsty';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import {gradeClasType} from '../common/util';
@@ -24,6 +20,8 @@ interface StaionInfo{
   khaiValue:String, 
   pm10Grade:number,
   pm10Value:String, 
+  pm25Grade:number,
+  pm25Value:String,
   dataTime: String,
 }
 
@@ -38,12 +36,7 @@ function StationAirInfoList({_station, _init}: StaionProps) {
     pageNo: 1,
     stationName: _station} );
 
-  useEffect(()=>{
-
-    console.log("StationAirInfoList useEffect() 호출");
-  },[]);
-
-  if(_init){
+   if(_init){
         
     return <div>초기화되었습니다.</div>
   }
@@ -53,12 +46,12 @@ function StationAirInfoList({_station, _init}: StaionProps) {
     // return <span>Loading...</span>
     return <CircularProgress />
   }
-  debugger;
+
   if (isError) {
     return <span>Error</span>
   }
 
-  if(stationAirInfos===null){
+  if(stationAirInfos.response.body.items===null){
     return <span>Error</span>
   } 
 
@@ -66,7 +59,7 @@ function StationAirInfoList({_station, _init}: StaionProps) {
   let Todos:StaionInfo[] = [] ;
 
   
-  stationAirInfos.forEach(function (airInfo: any, index: number) {
+  stationAirInfos.response.body.items.forEach(function (airInfo: any, index: number) {
     const newTodos:StaionInfo[] = [...Todos, {
       id: index+1,
       so2Grade: airInfo.so2Grade,      
@@ -79,11 +72,12 @@ function StationAirInfoList({_station, _init}: StaionProps) {
       khaiValue: airInfo.khaiValue+gradeClasType(airInfo.khaiGrade, '/'),
       pm10Grade: airInfo.pm10Grade,
       pm10Value: airInfo.pm10Value+gradeClasType(airInfo.pm10Grade, '/'),
+      pm25Grade: airInfo.pm25Grade,
+      pm25Value: airInfo.pm25Value+gradeClasType(airInfo.pm25Grade, '/'),  
       dataTime: airInfo.dataTime,
       } ];
       Todos = newTodos;
   });
-  debugger;  
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'No', width: 60 },
@@ -107,26 +101,6 @@ function StationAirInfoList({_station, _init}: StaionProps) {
     <div style={{ height: 400, width: '100%' }}>
         <DataGrid rows={Todos} columns={columns} rowHeight={25} hideFooter={true} />
     </div>
-    //   <div> 
-    //     <div key='00'>                              
-    //               <span>so2Grade</span>                
-    //               <span>so2Value</span>
-    //               <span>coGrade</span>
-    //               <span>coValue</span>
-    //               <span>khaiValue</span>
-    //     </div>       
-    //     {stationAirInfos?.map(function (airInfo: any, index: number) {
-    //         return (
-    //         <div key={index}>                              
-    //             <span>{airInfo.so2Grade}</span>                
-    //             <span>{airInfo.so2Value}</span>
-    //             <span>{airInfo.coGrade}</span>
-    //             <span>{airInfo.coValue}</span>
-    //             <span>{airInfo.khaiValue}</span>
-    //         </div>
-    //         );
-    //     })}
-    //   </div>
   );
 
 }

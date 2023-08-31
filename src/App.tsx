@@ -4,9 +4,9 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Route, Routes} from 'react-router-dom'
 import Box from '@mui/material/Box';
-import Main from './component/Main';
 import Header from './component/Header';
 import Footer from './component/Footer';
+import Main from './routes/Main';
 import CityAirInfo from './routes/CityAirInfo';
 import StationAirInfo from './routes/StationAirInfo';
 import PageC from './routes/PageC';

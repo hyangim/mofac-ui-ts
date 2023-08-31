@@ -1,37 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useMsrstnInfoInqire } from '../api/MsrstnInfoInqire';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {sidoNames} from '../common/global';
-// export interface StaionProps {
-//   selStationPage: Function;
-// }
 
 export interface CityProps {
   _sido: string,
   selSidoPage: Function,
 }
-
-
-// export default function StationListCombo({selStationPage}: StaionProps) {  
+ 
 export default function CityListCombo({_sido, selSidoPage}: CityProps) {    
   
   const [sido, setSido] = useState<string>(_sido);
   
   useEffect(()=>{
-    console.log("Station ListCombo useEffect() 호출");
+    // console.log("Station ListCombo useEffect() 호출");
   },[]);
 
  
   const sidoHandleChange = (event: SelectChangeEvent) => {
     setSido(event.target.value);
     selSidoPage(event.target.value);
-    console.log('sidoHandleChange>setSido() sido:'+ sido+'event.target.value:'+event.target.value);    
+    // console.log('sidoHandleChange>setSido() sido:'+ sido+'event.target.value:'+event.target.value);    
   };
-
 
   return (
     <div>
@@ -51,8 +44,6 @@ export default function CityListCombo({_sido, selSidoPage}: CityProps) {
         })}
       </Select>
       </FormControl>
-    </div>
-
-  
+    </div>  
   );
 }

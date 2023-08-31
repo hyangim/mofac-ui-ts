@@ -1,16 +1,24 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const BASE_URL = 'http://apis.data.go.kr'
+const BASE_URL = 'http://apis.data.go.kr/';
+const serviceKey = 'LFz9dGOoxURk2A8NOe%2BtaBYrx8CyRSTixm0A46pa3tC%2Bwr2VwdO7O3Bpmt46s45nRukeFQfqA12oWocpDqH%2B9A%3D%3D';
+
+
 // const instance = axios.create({
 // 	baseURL: process.env.PUBLIC_URL,
 // 	timeout: 1000
 // })
-const instance = axios.create({
+const api = axios.create({
 	baseURL: BASE_URL,
-	timeout: 1000
+    params : {
+        returnType : 'json',
+		// serviceKey : 'LFz9dGOoxURk2A8NOe%2BtaBYrx8CyRSTixm0A46pa3tC%2Bwr2VwdO7O3Bpmt46s45nRukeFQfqA12oWocpDqH%2B9A%3D%3D',
+        ver : '1.0',        
+	},
+	// timeout: 1000
 })
 
-instance.interceptors.request.use(
+api.interceptors.request.use(
     (config) => {
         // 요청 바로 직전
         // axios 설정값에 대해 작성합니다.
@@ -29,7 +37,7 @@ instance.interceptors.request.use(
     }
 );
 
-instance.interceptors.response.use(
+api.interceptors.response.use(
 (response) => {
     if (response.status === 404) {
     console.log('404 페이지로 넘어가야 함!');
@@ -58,4 +66,51 @@ async (error) => {
 }
 );
 
-export default instance;
+// export default api;
+
+const airApi = {
+    getCtprvnRltmMesureDnsty2 : (sidoName:any) => api.get('B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty',{
+        params : {
+            sidoName : sidoName,
+            pageNo : 1,
+            numOfRows : 100,            
+            serviceKey : 'LFz9dGOoxURk2A8NOe%2BtaBYrx8CyRSTixm0A46pa3tC%2Bwr2VwdO7O3Bpmt46s45nRukeFQfqA12oWocpDqH%2B9A%3D%3D',
+            ver : '1.0',    
+            returnType : 'json',        
+        }
+    }),
+    getCtprvnRltmMesureDnsty3 : (sidoName:any) => api.get('/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?sidoName='+sidoName+'&pageNo=1&numOfRows=100&serviceKey='+serviceKey
+    ),
+    getCtprvnRltmMesureDnsty : (sidoName:any) => api.get('/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey='+serviceKey,{
+        params : {
+            sidoName : sidoName,
+            pageNo : 1,
+            numOfRows : 100,     
+        }
+    }),
+    getMsrstnAcctoRltmMesureDnsty : (stationName:any) => api.get('/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey='+serviceKey,{
+        params : {
+            stationName : stationName,
+            pageNo : 1,
+            numOfRows : 100,   
+            dataTerm: 'DAILY',
+        }
+    }),
+    getMsrstnList : (addr:any) => api.get('/B552584/MsrstnInfoInqireSvc/getMsrstnList?serviceKey='+serviceKey,{
+        params : {
+            addr : addr,
+            pageNo : 1,
+            numOfRows : 100,
+        }
+    }),
+    getMinuDustFrcstDspth : (searchDate:any) => api.get('B552584/ArpltnInforInqireSvc/getMinuDustFrcstDspth?serviceKey='+serviceKey,{
+        params : {
+            searchDate : searchDate,
+            pageNo : 1,
+            numOfRows : 100,
+        }
+    }),    
+}
+
+export default airApi;
+
