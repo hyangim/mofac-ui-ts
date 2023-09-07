@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Divider from '@mui/material/Divider';
 import SimpleAirInfo from '../component/SimpleAirInfo';
-import { useMinuDustFrcstDspth } from '../api/MinuDustFrcstDspth';
-import {getToday} from '../common/util';
 
 interface MainProps {
   posts:string;
@@ -10,7 +8,7 @@ interface MainProps {
 }
 
 function Main(props: MainProps) {
-  const { posts, title } = props;
+  const { title } = props;
 
   useEffect(()=>{
     document.title = '홈';

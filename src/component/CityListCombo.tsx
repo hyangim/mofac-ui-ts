@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,7 +13,8 @@ export interface CityProps {
  
 export default function CityListCombo({_sido, selSidoPage}: CityProps) {    
   
-  const [sido, setSido] = useState<string>(_sido);
+  // const [sido, setSido] = useState<string>(_sido);
+  const sido = useRef<string>(_sido);
   
   useEffect(()=>{
     // console.log("Station ListCombo useEffect() 호출");
@@ -21,7 +22,8 @@ export default function CityListCombo({_sido, selSidoPage}: CityProps) {
 
  
   const sidoHandleChange = (event: SelectChangeEvent) => {
-    setSido(event.target.value);
+    sido.current = event.target.value;
+    // setSido(event.target.value);
     selSidoPage(event.target.value);
     // console.log('sidoHandleChange>setSido() sido:'+ sido+'event.target.value:'+event.target.value);    
   };
@@ -33,7 +35,7 @@ export default function CityListCombo({_sido, selSidoPage}: CityProps) {
       <Select
         labelId="select-sido-label"
         id="sido"
-        value={sido}
+        value={sido.current}
         label="지역"
         onChange={sidoHandleChange}
       >

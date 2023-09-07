@@ -20,13 +20,6 @@ interface HeaderProps {
   title: string;
 }
 
-const sections = [
-  { title: '주간예보', url: '/' , icon: 'HouseIcon'},
-  { title: '시도별s', url: '/CityAirInfo', icon: 'ApartmentIcon' },
-  { title: '측정소별', url: '/StationAirInfo' , icon: 'LocationOnIcon'},
-  { title: 'Business', url: '/pageC' , icon: 'AcUnitIcon'},
-];
-
 export default function Header(props: HeaderProps) {
   const { sections, title } = props;
   const [value, setValue] = React.useState(0);
@@ -44,6 +37,8 @@ export default function Header(props: HeaderProps) {
         return <LocationOnIcon/>;
       case "AcUnitIcon":
         return <AcUnitIcon/>;        
+      case "RestoreIcon":
+        return <RestoreIcon/>;        
       default:
         return <AcUnitIcon/>;
     }  

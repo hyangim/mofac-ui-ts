@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useMsrstnInfoInqire } from '../api/MsrstnInfoInqire';
 import InputLabel from '@mui/material/InputLabel';
@@ -16,14 +16,22 @@ export interface StaionProps {
 
 export default function StationListCombo({_sido, _station, selSidoPage, selStationPage}: StaionProps) {    
 
-  const [sido, setSido] = useState<string>(_sido);
-  const [station, setStation] = useState<string>(_station);
+  // const [sido, setSido] = useState<string>(_sido);
+  // const [station, setStation] = useState<string>(_station);
+  const sido = useRef<string>(_sido);
+  const station = useRef<string>(_station);
 
   const {
     isLoading, 
     isError, 
     data: stationInfos 
-  } = useMsrstnInfoInqire( sido );
+  } = useMsrstnInfoInqire( sido.current );
+
+  // const {
+  //   isLoading, 
+  //   isError, 
+  //   data: stationInfos 
+  // } = useMsrstnInfoInqire( sido );
 
   if (isLoading) {
     // return <span>Loading...</span>
@@ -38,17 +46,27 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
   }
 
   const sidoHandleChange = (event: SelectChangeEvent) => {
-    setSido(event.target.value);
+    // setSido(event.target.value);
+    // console.log('sidoHandleChange>setSido() sido:'+ sido+'event.target.value:'+event.target.value);    
     selSidoPage(event.target.value);
-    console.log('sidoHandleChange>setSido() sido:'+ sido+'event.target.value:'+event.target.value);    
+    sido.current = event.target.value;
+    station.current = '';
+    console.log('sidoHandleChange>setSido() sido:'+ sido.current+'event.target.value:'+event.target.value);    
+    
   };
 
   const stationChange = (event: SelectChangeEvent) => {
-    setStation(event.target.value);
-    console.log('stationChange(sido):'+ sido) 
-    console.log('stationChange(station):'+ station) 
-    console.log('stationChange(event.target.value):'+ event.target.value) 
+
+    // setStation(event.target.value);
+    station.current = event.target.value;
+    console.log('stationChange(sido):'+ sido.current) 
+    console.log('stationChange(station):'+ station.current) 
+    selStationPage(sido.current, event.target.value);
+    // console.log('stationChange(sido):'+ sido) 
+    // console.log('stationChange(station):'+ station) 
+    // console.log('stationChange(event.target.value):'+ event.target.value) 
     selStationPage(sido, event.target.value);
+    
     
   };
 
@@ -59,10 +77,11 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
       <Select
         labelId="select-sido-label"
         id="sido"
-        value={sido}
+        value={sido.current}
+        // value={sido}
         label="지역"
         onChange={sidoHandleChange}
-      >
+      >         
         {sidoNames?.map(function (sido: any, index: number) {
             return (
               <MenuItem key={index} value={sido.sidoName}>{sido.sidoName}</MenuItem>
@@ -75,10 +94,12 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
       <Select
         labelId="sel-station-label"
         id="station"
-        value={station}
-        label="지역"
+        value={station.current}
+        // value={station}
+        label="측정소"
         onChange={stationChange}
       >
+        <MenuItem key='00' value=''/>
         {stationInfos.response.body.items?.map(function (info: any, index: number) {
             return (
               <MenuItem key={index} value={info.stationName}>{info.stationName}</MenuItem>

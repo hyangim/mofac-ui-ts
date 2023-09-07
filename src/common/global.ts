@@ -1,8 +1,17 @@
+export const AIR_BASE_URL = 'http://apis.data.go.kr/';
+
+export const CACAO_BASE_URL = 'https://dapi.kakao.com/';
+
+export const serviceKey = 'LFz9dGOoxURk2A8NOe%2BtaBYrx8CyRSTixm0A46pa3tC%2Bwr2VwdO7O3Bpmt46s45nRukeFQfqA12oWocpDqH%2B9A%3D%3D';
+
+export const REST_API_KEY = '40b0b69f1d817ee3277ee7747bce9a7d';
+
 export const sections = [
     { title: '홈', url: '/' , icon: 'HouseIcon'},
-    { title: '시도별', url: '/CityAirInfo', icon: 'ApartmentIcon' },
-    { title: '측정소별', url: '/StationAirInfo' , icon: 'LocationOnIcon'},
-    { title: 'Business', url: '/pageC' , icon: 'AcUnitIcon'},
+    { title: '시도별', url: '/cityAirInfo', icon: 'ApartmentIcon' },
+    { title: '측정소별', url: '/stationAirInfo' , icon: 'LocationOnIcon'},
+    { title: '지도', url: '/airInfo' , icon: 'AirIcon'},
+    { title: '테스트', url: '/testPage' , icon: 'RestoreIcon'},
   ];
 
   export const sidoNames = [
@@ -30,6 +39,6 @@ export const sections = [
     2: "보통",
     3: "나쁨",
     4: "매우나쁨",
-  } as const;
+  };
   
   type GRADE_TYPE = typeof GRADE_TYPE[keyof typeof GRADE_TYPE];

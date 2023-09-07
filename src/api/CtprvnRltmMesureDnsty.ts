@@ -17,7 +17,7 @@ const CtprvnRltmMesureDnsty  = async (sidoName:string) => {
     return res.data;
   }
 }catch(error){
-  throw  Error("CtprvnRltmMesureDnsty error!");
+  throw  Error("CtprvnRltmMesureDnsty error!"+error);
 }
 
 }

@@ -1,15 +1,12 @@
 import axios from 'axios';
-
-const BASE_URL = 'http://apis.data.go.kr/';
-const serviceKey = 'LFz9dGOoxURk2A8NOe%2BtaBYrx8CyRSTixm0A46pa3tC%2Bwr2VwdO7O3Bpmt46s45nRukeFQfqA12oWocpDqH%2B9A%3D%3D';
-
+import {AIR_BASE_URL, serviceKey} from '../common/global';
 
 // const instance = axios.create({
 // 	baseURL: process.env.PUBLIC_URL,
 // 	timeout: 1000
 // })
 const api = axios.create({
-	baseURL: BASE_URL,
+	baseURL: AIR_BASE_URL,
     params : {
         returnType : 'json',
 		// serviceKey : 'LFz9dGOoxURk2A8NOe%2BtaBYrx8CyRSTixm0A46pa3tC%2Bwr2VwdO7O3Bpmt46s45nRukeFQfqA12oWocpDqH%2B9A%3D%3D',
@@ -109,7 +106,7 @@ const airApi = {
             pageNo : 1,
             numOfRows : 100,
         }
-    }),    
+    }), 
 }
 
 export default airApi;

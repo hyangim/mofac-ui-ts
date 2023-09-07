@@ -16,6 +16,29 @@ export const gradeClasType = (grade:string, gbn:string) => {
     }
  };
 
+ export const getUnit = (value:string, type:string) => {
+  if(value !== null && value !== undefined && value !== '-') {
+    switch (type) {
+      case 'SO2':
+        return `${value}ppm`;
+      case 'CO':
+        return `${value}ppm`;
+      case 'O3':
+        return `${value}ppm`;
+      case 'NO2':
+        return `${value}ppm`;
+      case 'PM10':
+        return `${value}㎍/㎥`;
+      case 'PM25':
+        return `${value}㎍/㎥`;
+      default:
+        return "";
+    }
+  }else{
+    return '-';
+  }
+};
+
 
  export const nvl = (value:string) => {
   if(value !== null && value !== undefined) {
@@ -30,10 +53,20 @@ export const getToday = () => {
   let year = now.getFullYear();
   let month = now.getMonth()+1;
   let day = now.getDate();
+  let lastDate = new Date(year, month, day);
+  // let lastDay = lastDate.getDay();
   if(month<10){
-    return year + '-' + 0+month + '-' + day;  
+    if(day<10){
+      return `${year}-0${month}-0${day}`;    
+    }else{
+      return `${year}-0${month}-${day}`;
+    }
   }else{
-    return year + '-' + month + '-' + day;  
+    if(day<10){
+      return `${year}-${month}-0${day}`;    
+    }else{
+      return `${year}-${month}-${day}`;
+    }
   }
   
 };

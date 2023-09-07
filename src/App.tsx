@@ -9,7 +9,8 @@ import Footer from './component/Footer';
 import Main from './routes/Main';
 import CityAirInfo from './routes/CityAirInfo';
 import StationAirInfo from './routes/StationAirInfo';
-import PageC from './routes/PageC';
+import AirInfo from './routes/AirInfo';
+import TestPage from './routes/TestPage';
 import {sections} from './common/global';
 
 
@@ -29,9 +30,10 @@ function App() {
       >
       <Routes>
         <Route path="/" element = {<Main title={sections[0].title} posts={posts} />}></Route>
-        <Route path="/CityAirInfo" element = {<CityAirInfo  title={sections[1].title} />}></Route>
-        <Route path="/StationAirInfo" element = {<StationAirInfo title={sections[2].title} />}></Route>
-        <Route path="/pageC" element = {<PageC />}></Route>
+        <Route path="/cityAirInfo" element = {<CityAirInfo  title={sections[1].title} />}></Route>
+        <Route path="/stationAirInfo" element = {<StationAirInfo title={sections[2].title} />}></Route>
+        <Route path="/airInfo" element = {<AirInfo />}></Route>
+        <Route path="/testPage" element = {<TestPage />}></Route>
       </Routes>
       </Box>
       <Footer

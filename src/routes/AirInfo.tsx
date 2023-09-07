@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import xml2js from 'xml2js';
+import Divider from '@mui/material/Divider';
+import AirInfoTabPage from '../component/AirInfoTabPage';
 
 
 const fetchtempData  =  async(name:string) => {
@@ -45,7 +47,7 @@ const fetchtempData  =  async(name:string) => {
   }
 }
 
-function PageC() {
+function AirInfo() {
 
   useEffect(()=>{
     document.title = '홈';
@@ -58,14 +60,14 @@ function PageC() {
   //   })
   // });
 
-  const xmlData = fetchtempData('dd');  
-  console.log(xmlData);
+  // const xmlData = fetchtempData('dd');  
+  // console.log(xmlData);
   // const fetchtempData  = async (name:string) => {
 
   return (
-    <div id='xmlContent'>
-      Parse XML using ReactJs
-      {JSON.stringify(xmlData)}
+    <div>
+    <Divider />  
+    <AirInfoTabPage />
     </div>
   );
   // const data = fetchtempData("서울");
@@ -78,4 +80,4 @@ function PageC() {
   
   }
   
-  export default PageC;
+  export default AirInfo;
