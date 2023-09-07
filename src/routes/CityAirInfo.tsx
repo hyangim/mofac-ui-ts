@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useCtprvnRltmMesureDnsty } from '../api/CtprvnRltmMesureDnsty';
 import CityListCombo from '../component/CityListCombo';
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Divider from '@mui/material/Divider';
-import {gradeClasType, nvl, getUnit} from '../common/util';
+import {gradeClasType, getUnit} from '../common/util';
 
 interface CityProps {
   title: string;
