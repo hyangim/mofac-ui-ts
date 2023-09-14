@@ -17,11 +17,9 @@ import {sections} from './common/global';
 function App() {
   const posts = '메인 Post Text 입니다.';
   return (
-    // <Container maxWidth="sm">
     <Container fixed>
       <CssBaseline />
       <Header title="대기 오염 정보를 제공합니다." sections={sections} />    
-      {/* <Box sx={{ my: 4 }}>   */}
       <Box 
         sx={{
           width: '100%',
@@ -32,7 +30,7 @@ function App() {
         <Route path="/" element = {<Main title={sections[0].title} posts={posts} />}></Route>
         <Route path="/cityAirInfo" element = {<CityAirInfo  title={sections[1].title} />}></Route>
         <Route path="/stationAirInfo" element = {<StationAirInfo title={sections[2].title} />}></Route>
-        <Route path="/airInfo" element = {<AirInfo />}></Route>
+        <Route path="/airInfo" element = {<AirInfo title={sections[3].title} />}></Route>
         <Route path="/testPage" element = {<TestPage />}></Route>
       </Routes>
       </Box>

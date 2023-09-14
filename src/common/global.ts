@@ -34,11 +34,3 @@ export const sections = [
     { idx: 0, sidoName: '세종', sidoValue: '세종'},
   ];
 
-  export const GRADE_TYPE = {
-    1: "좋음",
-    2: "보통",
-    3: "나쁨",
-    4: "매우나쁨",
-  };
-  
-  type GRADE_TYPE = typeof GRADE_TYPE[keyof typeof GRADE_TYPE];

@@ -7,7 +7,7 @@ import {sidoNames} from '../common/global';
 
 export interface CityProps {
   _sido: string,
-  selSidoPage: Function,
+  selSidoPage: (sido: string)=>void,
 }
  
 export default function CityListCombo({_sido, selSidoPage}: CityProps) {    
@@ -38,7 +38,7 @@ export default function CityListCombo({_sido, selSidoPage}: CityProps) {
         label="지역"
         onChange={sidoHandleChange}
       >
-        {sidoNames?.map(function (sido: any, index: number) {
+        {sidoNames?.map(function (sido, index) {
             return (
               <MenuItem key={index} value={sido.sidoName}>{sido.sidoName}</MenuItem>
             );

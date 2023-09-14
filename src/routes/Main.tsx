@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import React,{ useEffect } from 'react';
 import Divider from '@mui/material/Divider';
 import SimpleAirInfo from '../component/SimpleAirInfo';
+import Title from '../component/Title';
 
 interface MainProps {
   posts:string;
@@ -11,15 +12,14 @@ function Main(props: MainProps) {
   const { title } = props;
 
   useEffect(()=>{
-    document.title = '홈';
-    // console.log("useEffect() 호출");
-  },[]);
+    document.title = title;
+  });
 
   return (
     <div
     >
       <Divider />
-      <div>{title}</div>
+      <Title title={title} />
       <SimpleAirInfo />
     </div>
   );

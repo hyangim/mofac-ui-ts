@@ -1,59 +1,39 @@
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import { useMsrstnAcctoRltmMesureDnsty } from '../api/MsrstnAcctoRltmMesureDnsty';
 import StationListCombo from '../component/StationListCombo';
-
+import Title from '../component/Title';
 import {gradeClasType, getUnit} from '../common/util';
+import {IStaionAirInfo} from '../interface/airInfo';
 
 
 interface StationProps {
   title: string;
 }
 
-interface AirInfo {
+interface StationAirInfoSearchParams {
   numOfRows: number;
   pageNo: number;
   sidoName: string;
   stationName: string;
-  init:boolean;
-}
-
-
-interface StaionInfo{
-  id:number,
-  so2Grade: number,
-  so2Value:String,
-  coGrade: number,
-  coValue:String,
-  o3Grade: number,
-  o3Value:String,
-  no2Grade:number,
-  no2Value:String, 
-  pm10Grade:number,
-  pm10Value:String, 
-  pm25Grade:number,
-  pm25Value:String,
-  dataTime: String,
 }
 
 function StationAirInfo(props: StationProps) {
   const {title} = props;
 
-  const [airInfo, setAirInfo] = useState<AirInfo>({
+  const [airInfo, setAirInfo] = useState<StationAirInfoSearchParams>({
     numOfRows: 100,
     pageNo: 1,
     sidoName: '서울',
     stationName: '종로구',
-    init:false
   })
   
   function selSidoPage(sido:string){
     setAirInfo({
       ...airInfo,
       sidoName: sido,
-      init:true
     });
   }
 
@@ -62,65 +42,35 @@ function StationAirInfo(props: StationProps) {
       ...airInfo,
       // sidoName: sido,
       stationName: station,
-      init:false
     });
   }
 
   useEffect(()=>{
-    document.title ='측정소별 대기오염 정보 조회';
-    // console.log("StationAirInfo useEffect() 호출");
-  },[]);
+    document.title = title;
+  });
 
 
 
   return (
     <div>
-      <Divider />   
-      <div>{title} 대기오염 정보 조회</div>
-      {/* <StationListCombo selStationPage={selStationPage} /> */}
+      <Divider />
+      <Title title={title} />
       <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selSidoPage={selSidoPage} selStationPage={selStationPage} />
-      <StationAirInfoList _station={airInfo.stationName} _init={airInfo.init}/>
+      <StationAirInfoList airInfo={airInfo}/>
     </div>
   );
 
 }
 
-interface StaionAirProps {
-  _station: string,
-  _init:boolean,
-}
-interface StaionInfo{
-  id:number,
-  so2Grade: number,
-  so2Value:String,
-  coGrade: number,
-  coValue:String,
-  o3Grade: number,
-  o3Value:String,
-  no2Grade:number,
-  no2Value:String, 
-  pm10Grade:number,
-  pm10Value:String, 
-  pm25Grade:number,
-  pm25Value:String,
-  dataTime: String,
-}
 
 
-function StationAirInfoList({_station, _init}: StaionAirProps) {
+function StationAirInfoList({airInfo}: {airInfo:StationAirInfoSearchParams}) {
 
   const {
     isLoading, 
     isError, 
     data: stationAirInfos
-  } = useMsrstnAcctoRltmMesureDnsty( {numOfRows: 100,
-    pageNo: 1,
-    stationName: _station} );
-
-  //  if(_init){
-        
-  //   return <div>초기화되었습니다.</div>
-  // }
+  } = useMsrstnAcctoRltmMesureDnsty( airInfo );
 
   if (isLoading) {
     // return <span>Loading...</span>
@@ -131,16 +81,16 @@ function StationAirInfoList({_station, _init}: StaionAirProps) {
     return <span>Error</span>
   }
 
-  if(stationAirInfos.response.body.items===null){
+  if(stationAirInfos?.response?.body?.items===null){
     return <span>Error</span>
   } 
 
 
-  let Todos:StaionInfo[] = [] ;
+  let Todos:IStaionAirInfo[] = [] ;
 
   
-  stationAirInfos.response.body.items.forEach(function (airInfo: any, index: number) {
-    const newTodos:StaionInfo[] = [...Todos, {
+  stationAirInfos?.response?.body?.items.forEach(function (airInfo: any, index: number) {
+    const newTodos:IStaionAirInfo[] = [...Todos, {
       id: index+1,
       so2Grade: airInfo.so2Grade,      
       so2Value: getUnit(airInfo.so2Value,'SO2')+gradeClasType(airInfo.so2Grade, '/'),

@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useCtprvnRltmMesureDnsty } from '../api/CtprvnRltmMesureDnsty';
 import CityListCombo from '../component/CityListCombo';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Divider from '@mui/material/Divider';
 import {gradeClasType, getUnit} from '../common/util';
+import {ICityAirInfo} from '../interface/airInfo';
+import Title from '../component/Title';
 
 interface CityProps {
   title: string;
@@ -15,26 +17,8 @@ export interface CityAirInfoListSearchParameters {
   pageNo: number;
   sidoName: string;
 }
-interface StaionInfo{
-  id:number,
-  so2Grade: number,
-  so2Value:String,
-  coGrade: number,
-  coValue:String,
-  o3Grade: number,
-  o3Value:String,
-  no2Grade:number,
-  no2Value:String,
-  pm10Grade:number,
-  pm10Value:String,
-  pm25Grade:number,
-  pm25Value:String,
-  dataTime: String,
-  sidoName:String,
-  stationName:String,
-}
 
-function CityAirInfo(props: CityProps) {
+export default function CityAirInfo(props: CityProps) {
 
   const {title} = props;
 
@@ -51,14 +35,14 @@ function CityAirInfo(props: CityProps) {
     });    
   }
   useEffect(()=>{
-    document.title ='시도별 대기오염 정보 조회';
-    // console.log("StationAirInfo useEffect() 호출");
-  },[]);
+    document.title = title;
+  });
+  
 
   return (    
     <div>
       <Divider />
-      <div>{title} 대기오염 정보 조회</div>
+      <Title title={title} />
       <CityListCombo _sido={airInfo.sidoName} selSidoPage={selSidoPage} />    
       <CityAirInfoList airInfo={airInfo} />  
     </div>
@@ -66,8 +50,8 @@ function CityAirInfo(props: CityProps) {
 }
 
 function CityAirInfoList({airInfo}: {airInfo:CityAirInfoListSearchParameters} ){
-
-  let Todos:StaionInfo[] = [] ;
+// function CityAirInfoList({airInfo}: {airInfo:CityAirInfoListSearchParameters} ){
+  let Todos:ICityAirInfo[] = [] ;
   const res = useCtprvnRltmMesureDnsty( airInfo );
   // console.log('useCtprvnRltmMesureDnsty resturn res:'+JSON.stringify(res)); 
 
@@ -79,9 +63,9 @@ function CityAirInfoList({airInfo}: {airInfo:CityAirInfoListSearchParameters} ){
   if (res.isError) {
     return <span>Error</span>
   }
-  if(res.isSuccess && res.data.response.header.resultCode==='00'){  
-    res.data.response.body.items.forEach(function (airInfo: any, index: number) {
-      const newTodos:StaionInfo[] = [...Todos, {
+  if(res.isSuccess && res?.data?.response?.header?.resultCode==='00'){  
+    res?.data?.response?.body?.items.forEach(function (airInfo: any, index: number) {
+      const newTodos:ICityAirInfo[] = [...Todos, {
         id: index+1,
         so2Grade: airInfo.so2Grade,      
         so2Value: getUnit(airInfo.so2Value,'SO2')+gradeClasType(airInfo.so2Grade, '/'),
@@ -122,4 +106,4 @@ function CityAirInfoList({airInfo}: {airInfo:CityAirInfoListSearchParameters} ){
 }
 
   
-export default CityAirInfo;
+// export default CityAirInfo;

@@ -63,21 +63,22 @@ export default function Header(props: HeaderProps) {
           {title}
         </Typography>
       </Toolbar>
-      <Box sx={{ width: 500 }}>
-      <BottomNavigation
-        showLabels
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-          handleClick(newValue);
-        }}
-      >
-      {sections.map((section:any, idx:number) => (
-        <BottomNavigationAction label={section.title} icon={getIcon(section.icon)} key={idx}>
-        </BottomNavigationAction>
-      ))}
-      </BottomNavigation>
-    </Box>
+      {/* <Box sx={{ width: 500 }}> */}
+      <Box>
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            handleClick(newValue);
+          }}
+        >
+          {sections.map((section:any, idx:number) => (
+            <BottomNavigationAction label={section.title} icon={getIcon(section.icon)} key={idx}>
+            </BottomNavigationAction>
+          ))}
+        </BottomNavigation>
+      </Box>
     </React.Fragment>
   );
 }

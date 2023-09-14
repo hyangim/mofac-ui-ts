@@ -8,17 +8,8 @@ stationName: string;
 }
 
 const MsrstnAcctoRltmMesureDnsty  = async (stationName:string) => {
-  
-  try{
-      const res = await airApi.getMsrstnAcctoRltmMesureDnsty(stationName);
-      if(typeof res.data.response === "undefined"){
-        throw  Error("type error!");
-      }else{
-        return res.data;
-      }
-  }catch(error){
-      throw  Error("MsrstnAcctoRltmMesureDnsty error");
-  }
+  const res = await airApi.getMsrstnAcctoRltmMesureDnsty(stationName);
+  return res.data;
 }
 
 export const useMsrstnAcctoRltmMesureDnsty = (props: ArpltnInfoProps) => {
@@ -27,10 +18,7 @@ export const useMsrstnAcctoRltmMesureDnsty = (props: ArpltnInfoProps) => {
     queryKey: ['stationAirInfos', props.stationName],
     queryFn:()=> MsrstnAcctoRltmMesureDnsty(props.stationName),
     onError: (error: any) => {
-      console.log('useCtprvnRltmMesureDnsty on Error:'+JSON.stringify(error))
-      if (error?.response?.data?.status === 400) {
-        // notify(error?.response?.data?.guideMessage);
-      }
+      console.log('useCtprvnRltmMesureDnsty on Error:'+JSON.stringify(error));
     },
   });
   

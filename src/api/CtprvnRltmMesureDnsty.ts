@@ -9,19 +9,12 @@ sidoName: string;
 
 const CtprvnRltmMesureDnsty  = async (sidoName:string) => {
   try{
-  const res = await airApi.getCtprvnRltmMesureDnsty(sidoName);
-  // console.log('CtprvnRltmMesureDnsty  res:'+JSON.stringify(res));
-  if(typeof res.data.response === "undefined"){    
-    throw  Error("CtprvnRltmMesureDnsty type error!");
-  }else{
+    const res = await airApi.getCtprvnRltmMesureDnsty(sidoName);
     return res.data;
+  }catch(error){
+    throw  Error("CtprvnRltmMesureDnsty error!"+error);
   }
-}catch(error){
-  throw  Error("CtprvnRltmMesureDnsty error!"+error);
 }
-
-}
-
 
 export const useCtprvnRltmMesureDnsty = (props: ArpltnInfoProps) => {
 
@@ -29,10 +22,7 @@ export const useCtprvnRltmMesureDnsty = (props: ArpltnInfoProps) => {
     queryKey: ['cityAirInfos', props.sidoName],
     queryFn:()=> CtprvnRltmMesureDnsty(props.sidoName),
     onError: (error: any) => {
-      console.log('useCtprvnRltmMesureDnsty on Error:'+JSON.stringify(error))
-      if (error?.response?.data?.status === 400) {
-        // notify(error?.response?.data?.guideMessage);
-      }
+      console.log('useCtprvnRltmMesureDnsty on Error:'+JSON.stringify(error))      
     },
   });
   

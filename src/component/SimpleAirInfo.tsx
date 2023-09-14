@@ -1,3 +1,4 @@
+import React from 'react';
 import { useMinuDustFrcstDspth } from '../api/MinuDustFrcstDspth';
 import {getToday} from '../common/util';
 
@@ -12,20 +13,19 @@ function SimpleAirInfo() {
         {res?.data?.response?.body?.items?.map(function (item: any, index: number) {
             if(item.informData===searchDate){
               return (
-                <TodayInfo item={item} index={index} />
+                <TodayInfo item={item} key={index} />
                 );    
             }else{
-              return(<div/>);
+              return('');
             }
         })}
       </div>
   );
 }
 
-function TodayInfo({item, index}: {item:any, index:number}){
-  console.log(`TodayInfo index:${index}`);
+function TodayInfo({item, key}: {item:any, key:number}){  
     return (
-    <div key = {index}>
+    <div key = {key}>
       <span>[{item.informCode}]</span>
       <span>{item.informData}기준</span><br/>
       <span>{item.informCause}</span>          

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useRef} from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -11,31 +11,36 @@ import { useMinuDustFrcstDspth } from '../api/MinuDustFrcstDspth';
 
 export default function AirInfoTabPage() {
   const [value, setValue] = React.useState('PM10');
-  let nowToday = getToday();
+  const nowToday = getToday();
   const [searchDate, setSearchDate] = useState(nowToday);
+  const pm10Cnt = useRef<number>(0);
+  const pm25Cnt = useRef<number>(0);
+  const o3Cnt = useRef<number>(0);
   
   const res = useMinuDustFrcstDspth( searchDate );
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    pm10Cnt.current = 0;
+    pm25Cnt.current = 0;
+    o3Cnt.current = 0;
     setValue(newValue);
   };
 
-
-  function TodayInfo({item, index}: {item:any, index:number}){
+  function TodayInfo({item, key}: {item:any, key:number}){
     const arr = item.informGrade.split(',');
 
       return (
         <TabPanel value={item.informCode}>
-            <div>
-            <span>{item.informData}기준</span><br/>
-            <span>{item.informCause}</span><br/>
-            <span>{item.informGrade}</span>
-            <span><img src={item.imageUrl2}></img></span><br/>
-            <span>{item.dataTime}</span>
+            <div key = {key}>
+              <span>{item.informData}기준</span><br/>
+              <span>{item.informCause}</span><br/>
+              <span>{item.informGrade}</span>
+              <span><img src={item.imageUrl2}></img></span><br/>
+              <span>{item.dataTime}</span>
             </div>
         </TabPanel>
       )
-}
+  }
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -48,23 +53,21 @@ export default function AirInfoTabPage() {
           </TabList>
         </Box>
         {res?.data?.response?.body?.items?.map(function (item: any, index: number) {
-            let pm10Cnt = 0;
-            let pm25Cnt = 0;
-            let o3Cnt = 0;
-            if(item.informData===searchDate && item.informCode==='PM10' && pm10Cnt===0){
-              pm10Cnt++;
+
+            if(item.informData===searchDate && item.informCode==='PM10' && pm10Cnt.current===0){
+              pm10Cnt.current++;
               return(
-                  <TodayInfo item={item} index={index} />
+                  <TodayInfo item={item} key={index} />
               );
-            }else if(item.informData===searchDate && item.informCode==='PM25' && pm25Cnt===0){
-              pm10Cnt++;
+            }else if(item.informData===searchDate && item.informCode==='PM25' && pm25Cnt.current===0){
+              pm25Cnt.current++;
               return(
-                  <TodayInfo item={item} index={index} />                    
+                  <TodayInfo item={item} key={index} />                    
               );
-            }else if(item.informData===searchDate && item.informCode==='O3' && o3Cnt===0){  
-              o3Cnt++;                                   
+            }else if(item.informData===searchDate && item.informCode==='O3' && o3Cnt.current===0){  
+              o3Cnt.current++;                                   
               return(
-                  <TodayInfo item={item} index={index} />
+                  <TodayInfo item={item} key={index} />
               );
             }
             return('');
