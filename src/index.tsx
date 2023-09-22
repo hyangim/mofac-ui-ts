@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import { AuthContextProvider } from './store/auth-context';
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(
@@ -20,9 +21,11 @@ root.render(
     <ReactQueryDevtools initialIsOpen={true} />
     <ThemeProvider theme={theme}>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>        
+      <AuthContextProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthContextProvider>       
     </ThemeProvider>,
   </QueryClientProvider>
 

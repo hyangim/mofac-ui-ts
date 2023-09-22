@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext}  from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
@@ -11,6 +11,9 @@ import AirIcon from '@mui/icons-material/Air';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
+import AuthContext from '../store/auth-context';
+import PortraitTwoToneIcon from '@mui/icons-material/PortraitTwoTone';
+import Icon from '@mui/material/Icon';
 
 interface HeaderProps {
   sections: ReadonlyArray<{
@@ -24,6 +27,7 @@ export default function Header(props: HeaderProps) {
   const { sections, title } = props;
   const [value, setValue] = React.useState(0);
   const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
 
   function getIcon(name:string){  
     switch(name){
@@ -48,10 +52,36 @@ export default function Header(props: HeaderProps) {
     navigate(sections[idx].url);
   }
 
+  function goLoginPage(){
+    navigate("/login");
+  }
+
+  function goLogOut(){
+    authCtx.logout();
+  }
+
+  function goMyPage(){
+    navigate("/mypage");
+  }
+
+  function AuthButtion(){
+      if(!authCtx.isLoggedIn){
+        return(<button onClick={goLoginPage}>로그인</button>);
+      }else{
+        return(
+          <div>
+            <a href="#" onClick={goMyPage}><PortraitTwoToneIcon/></a>
+            <button onClick={goLogOut}>로그아웃</button>
+          </div>
+        );
+      }
+  }
+
   return (
     <React.Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
         {/* <Button size="small">Subscribe</Button> */}
+        <AuthButtion />
         <Typography
           component="h2"
           variant="h5"
@@ -64,7 +94,7 @@ export default function Header(props: HeaderProps) {
         </Typography>
       </Toolbar>
       {/* <Box sx={{ width: 500 }}> */}
-      <Box>
+      <Box>      
         <BottomNavigation
           showLabels
           value={value}
@@ -77,7 +107,7 @@ export default function Header(props: HeaderProps) {
             <BottomNavigationAction label={section.title} icon={getIcon(section.icon)} key={idx}>
             </BottomNavigationAction>
           ))}
-        </BottomNavigation>
+        </BottomNavigation>        
       </Box>
     </React.Fragment>
   );

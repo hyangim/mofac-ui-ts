@@ -23,6 +23,7 @@
     "@types/react-dom": "^18.2.7",
     "axios": "^1.4.0",
     "buffer": "^6.0.3",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
@@ -60,5 +61,7 @@
   "devDependencies": {
     "@types/xml2js": "^0.4.11",
     "eslint-plugin-react-hooks": "^4.6.0"
-  }
+  },
+  "proxy":"http://127.0.0.1:8080"
 }
+

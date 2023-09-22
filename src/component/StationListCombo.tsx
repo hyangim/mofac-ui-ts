@@ -8,37 +8,19 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {sidoNames} from '../common/global';
 
 export interface StaionProps {
-  _sido: string,
-  _station: string,
-  selSidoPage: (sido:string)=>void,
-  selStationPage:(sido:string, station: string)=>void,
+  sido: string,
+  station: string,
+  sidoHandleChange: (event: SelectChangeEvent)=>void,
+  stationHandleChange:(event: SelectChangeEvent)=>void,
 }
 
-export default function StationListCombo({_sido, _station, selSidoPage, selStationPage}: StaionProps) {    
-
-  // const [sido, setSido] = useState<string>(_sido);
-  // const [station, setStation] = useState<string>(_station);
-  const sido = useRef<string>(_sido);
-  const station = useRef<string>(_station);
+export default function StationListCombo({sido, station, sidoHandleChange, stationHandleChange}: StaionProps) {    
 
   const {
     isLoading, 
     isError, 
     data: stationInfos 
-  } = useMsrstnInfoInqire( sido.current );
-
-
-  const sidoHandleChange = (event: SelectChangeEvent) => {
-    selSidoPage(event.target.value);
-    sido.current = event.target.value;
-    station.current = '';
-  };
-
-  const stationChange = (event: SelectChangeEvent) => {
-    station.current = event.target.value;
-    selStationPage(sido.current, event.target.value);
-  };
-
+  } = useMsrstnInfoInqire( sido );
 
   if (isLoading) {
     // return <span>Loading...</span>
@@ -60,8 +42,7 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
       <Select
         labelId="select-sido-label"
         id="sido"
-        value={sido.current}
-        // value={sido}
+        value={sido}
         label="지역"
         onChange={sidoHandleChange}
       >         
@@ -77,10 +58,10 @@ export default function StationListCombo({_sido, _station, selSidoPage, selStati
       <Select
         labelId="sel-station-label"
         id="station"
-        value={station.current}
+        value={station}
         // value={station}
         label="측정소"
-        onChange={stationChange}
+        onChange={stationHandleChange}
       >
         <MenuItem key='00' value=''/>
         {stationInfos?.response?.body?.items?.map(function (info: any, index: number) {

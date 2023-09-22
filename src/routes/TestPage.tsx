@@ -2,6 +2,7 @@ import React,{ useEffect, useState, useReducer, useRef } from 'react';
 import Divider from '@mui/material/Divider';
 
 import { useTranscoord } from '../api/Transcoord';
+import { useUser } from '../api/User';
 import { useNavigate } from "react-router-dom";
 import ModalDialog from '../component/ModalDialog'
 
@@ -28,6 +29,9 @@ function TestPage() {
   const [show, setShow] = useState(false);
   console.log('locationInfo'+locationInfo);
   const res = useTranscoord( locationInfo.longitude, locationInfo.latitude );
+
+  const userRes = useUser( 'admin' );
+  console.log('userRes'+JSON.stringify(userRes));
 
   function init(initialCount: any) {
     return {count: initialCount};
@@ -159,11 +163,13 @@ console.log(sum(1,2));
     //           <li>This is page PageC</li>
     //     </div>
     //   );
+    
   }else{
     return(
       <div></div>
     );
   }
+ 
   
 }
   

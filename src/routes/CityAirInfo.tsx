@@ -7,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import {gradeClasType, getUnit} from '../common/util';
 import {ICityAirInfo} from '../interface/airInfo';
 import Title from '../component/Title';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface CityProps {
   title: string;
@@ -28,12 +29,13 @@ export default function CityAirInfo(props: CityProps) {
     sidoName: '서울',
   })
  
-  function selSidoPage(sido: string){
+  function sidoHandleChange(event: SelectChangeEvent){
     setAirInfo({
       ...airInfo,
-      sidoName: sido,
+      sidoName: event.target.value,
     });    
   }
+
   useEffect(()=>{
     document.title = title;
   });
@@ -43,7 +45,7 @@ export default function CityAirInfo(props: CityProps) {
     <div>
       <Divider />
       <Title title={title} />
-      <CityListCombo _sido={airInfo.sidoName} selSidoPage={selSidoPage} />    
+      <CityListCombo sido={airInfo.sidoName} sidoHandleChange={sidoHandleChange} />    
       <CityAirInfoList airInfo={airInfo} />  
     </div>
   );

@@ -7,6 +7,7 @@ import StationListCombo from '../component/StationListCombo';
 import Title from '../component/Title';
 import {gradeClasType, getUnit} from '../common/util';
 import {IStaionAirInfo} from '../interface/airInfo';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 
 interface StationProps {
@@ -30,18 +31,18 @@ function StationAirInfo(props: StationProps) {
     stationName: '종로구',
   })
   
-  function selSidoPage(sido:string){
+  function sidoHandleChange(event: SelectChangeEvent){
     setAirInfo({
       ...airInfo,
-      sidoName: sido,
+      sidoName: event.target.value,
+      stationName: '',
     });
   }
 
-  function selStationPage(sido:string, station: string){
+  function stationHandleChange(event: SelectChangeEvent){
     setAirInfo({
       ...airInfo,
-      // sidoName: sido,
-      stationName: station,
+      stationName: event.target.value,
     });
   }
 
@@ -49,13 +50,11 @@ function StationAirInfo(props: StationProps) {
     document.title = title;
   });
 
-
-
   return (
     <div>
       <Divider />
       <Title title={title} />
-      <StationListCombo _sido={airInfo.sidoName} _station={airInfo.stationName} selSidoPage={selSidoPage} selStationPage={selStationPage} />
+      <StationListCombo sido={airInfo.sidoName} station={airInfo.stationName} sidoHandleChange={sidoHandleChange} stationHandleChange={stationHandleChange} />
       <StationAirInfoList airInfo={airInfo}/>
     </div>
   );
