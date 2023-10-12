@@ -21,7 +21,7 @@ const AuthContext = React.createContext({
   login: (username:string, password: string) => {return;},
   logout: () => {return;},
   getUser: () => {return;},
-  changeNickname: (nickname:string) => {return;},
+  changeNickname: (username:string, nickname:string) => {return;},
   changePassword: (exPassword: string, newPassword: string) => {return;}
 });
 
@@ -62,7 +62,6 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
   const loginHandler = (username:string, password: string) => {
     setIsSuccess(false);
     console.log('loginHandler_isSuccess'+isSuccess);
-    
     const data = authAction.loginActionHandler(username, password);
     data.then((result) => {
       if (result !== null) {
@@ -80,6 +79,7 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
   };
 
   const logoutHandler = useCallback(() => {
+    alert("token 만료");
     setToken('');
     authAction.logoutActionHandler();
     if (logoutTimer) {
@@ -101,15 +101,16 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
     
   };
 
-  const changeNicknameHandler = (nickname:string) => {
+  const changeNicknameHandler = (username:string, nickname:string) => {
     setIsSuccess(false);
 
-    const data = authAction.changeNicknameActionHandler(nickname, token);
+    const data = authAction.changeNicknameActionHandler(username, nickname, token);
     data.then((result) => {
       if (result !== null) {
         const userData:UserInfo = result.data;
         setUserObj(userData);
         setIsSuccess(true);
+        alert("변경되었습니다.");
       }
     })
   };

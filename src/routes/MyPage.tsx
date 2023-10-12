@@ -1,6 +1,7 @@
 import React,{ useEffect, useState, useContext, useRef } from 'react';
 import Divider from '@mui/material/Divider';
 import AuthContext from '../store/auth-context';
+import ChangeUsername from '../component/ChangeUserName';
 
 
 
@@ -39,7 +40,8 @@ function MyPage() {
         <Divider />
         마이페이지          
         <p>nickname:{nickname}</p>    
-        <p>username:{username}</p>           
+        <p>username:{username}</p>   
+        <ChangeUsername username={username} nickname={nickname} />        
       </div>      
     );
  
