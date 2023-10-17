@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
 
@@ -8,9 +8,9 @@ const CreateAccount = () => {
   const authCtx = useContext(AuthContext);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const nicknameInputRef = useRef<HTMLInputElement>(null);
-  
+  const nicknameInputRef = useRef<HTMLInputElement>(null);  
 
+  const isSuccess = authCtx.isSuccess;
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -19,14 +19,19 @@ const CreateAccount = () => {
     const enteredNickname = nicknameInputRef.current!.value;
 
     authCtx.signup(enteredEmail, enteredPassword, enteredNickname);
-    
-    if (authCtx.isSuccess) {
-      alert('singup 성공');
-      return navigate("/login", { replace: true });
-      
-    }
-    
   }
+  
+  const goLogin = useCallback(()=> {
+    alert('singup 성공');
+    return navigate("/login", { replace: true });
+  },[navigate]);
+  
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('isSuccess:'+isSuccess);
+      goLogin();
+    }
+  }, [isSuccess, goLogin]);
 
   return (
     <section>

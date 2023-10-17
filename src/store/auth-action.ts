@@ -15,27 +15,41 @@ const calculateRemainingTime = (expirationTime:number) => {
   return remainingDuration;
 };
 
-export const loginTokenHandler = (token:string, expirationTime:number) => {
+export const loginTokenHandler = (token:string, expirationTime:number, refreshToken:string) => {
   localStorage.setItem('token', token);
   localStorage.setItem('expirationTime', String(expirationTime));
+  localStorage.setItem('refreshToken', refreshToken);
 
+  const remainingTime = calculateRemainingTime(expirationTime);
+  return remainingTime;
+}
+
+export const refreshTokenHandler = (token:string, expirationTime:number) => {
+  localStorage.setItem('token', token);
+  localStorage.setItem('expirationTime', String(expirationTime));
   const remainingTime = calculateRemainingTime(expirationTime);
   return remainingTime;
 }
 
 export const retrieveStoredToken = () => {
   const storedToken = localStorage.getItem('token');
+  const storedRefreshToken = localStorage.getItem('refreshToken');
   const storedExpirationDate = localStorage.getItem('expirationTime') || '0';  
   const remaingTime = calculateRemainingTime(+ storedExpirationDate);
-
-  if(remaingTime <= 1000) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expirationTime');
-    return null
+  if(storedToken===null){
+    return null;
   }
+
+  // if(remaingTime <= 1000) {
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('expirationTime');
+  //   localStorage.removeItem('refreshToken');
+  //   return null
+  // }
 
   return {
     token: storedToken,
+    refreshToken: storedRefreshToken,
     duration: remaingTime
   }
 }
@@ -64,9 +78,20 @@ export const loginActionHandler = (username:string, password: string) => {
   return response;
 };
 
+export const refreshTokenActionHandler = (refreshToken:string) => {
+  const URL = '/api/refresh';
+  const refreshObject = {
+     'refreshToken': refreshToken
+    };
+  const response = POST(URL, refreshObject, {});
+
+  return response;
+};
+
 export const logoutActionHandler = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationTime');
+  localStorage.removeItem('refreshtoken');
 };
 
 // export const getUserActionHandler = (token:string) => {

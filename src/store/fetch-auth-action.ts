@@ -23,7 +23,6 @@ const fetchAuth = async (fetchData: FetchData) => {
     (method === 'put' && (await axios.put(url, data, header))) ||
     (method === 'delete' && (await axios.delete(url, header))
     );
-    
     if(response && response.data.error) {
       console.log((response.data as LoginFailType).error);
       alert("Wrong ID or Password");
@@ -41,7 +40,11 @@ const fetchAuth = async (fetchData: FetchData) => {
     
     if (axios.isAxiosError(err)) {
       const serverError = err as AxiosError<ServerError>;
-      if (serverError && serverError.response) {
+      const response = serverError.response as AxiosResponse<any, any>;
+      if(response.status===401){
+        alert(response.status);
+        return null;
+      }else if (serverError && serverError.response) {
         console.log(serverError.response);
         // alert("failed!"+JSON.stringify(serverError.response.data.message));        
         alert("failed!"+serverError.response.data.message);

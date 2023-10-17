@@ -8,6 +8,7 @@ type UserInfo = { username: string, nickname: string};
 type LoginToken = { 
   grantType: string,
   accessToken: string,
+  refreshToken: string,
   tokenExpiresIn: number
 }
 
@@ -31,11 +32,14 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
   const tokenData = authAction.retrieveStoredToken();
 
   let initialToken:any;
+  let initialRefreshToken:any;
   if (tokenData) {
     initialToken = tokenData.token!;
+    initialRefreshToken = tokenData.refreshToken!;
   }
 
   const [token, setToken] = useState(initialToken);
+  const [refreshToken, setRefreshToken] = useState(initialRefreshToken);
   const [userObj, setUserObj] = useState({
     username: '',
     nickname: ''
@@ -48,13 +52,14 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
 
 
   
-  const signupHandler = (username:string, password: string, nickname: string) => {
+  const signupHandler = (username:string, password: string, nickname: string) => {    
     setIsSuccess(false);
     const response = authAction.signupActionHandler(username, password, nickname);    
     response.then((result) => {
-      if (result !== null) {
+      if (result !== null) {        
         console.log('signupHandler success!!');
-        setIsSuccess(true);
+        setIsSuccess(true);        
+        alert("가입되었습니다.");
       }
     });
   }
@@ -68,24 +73,62 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
         console.log('signupHandler success!!');
         const loginData:LoginToken = result.data;
         setToken(loginData.accessToken);
+        setRefreshToken(loginData.refreshToken);
         logoutTimer = setTimeout(
-          logoutHandler,
-          authAction.loginTokenHandler(loginData.accessToken, loginData.tokenExpiresIn)
+          refreshHandler,
+          authAction.loginTokenHandler(loginData.accessToken, loginData.tokenExpiresIn, loginData.refreshToken)
         );
         setIsSuccess(true);
         console.log('loginHandler_isSuccess'+isSuccess);
+      }else{
+        alert("로그인 실패!");
       }
     })
   };
 
-  const logoutHandler = useCallback(() => {
-    alert("token 만료");
+  const refreshHandler = useCallback(() =>{
+    if(refreshToken!=null){
+      const data = authAction.refreshTokenActionHandler(refreshToken);
+      alert("refrsh token ok")
+      data.then((result) => {
+        if (result !== null) {
+          console.log('refreshHandler success!!');
+          const loginData:LoginToken = result.data;
+          setToken(loginData.accessToken);
+          
+          logoutTimer = setTimeout(
+            refreshHandler,
+            authAction.refreshTokenHandler(loginData.accessToken, loginData.tokenExpiresIn)
+          );
+          setIsSuccess(true);
+          // console.log('loginHandler_isSuccess'+isSuccess);
+        }else{
+          alert("token이 만료되었습니다.");
+          logoutHandler();
+        }
+      })
+    }
+  },[refreshToken]);
+
+  const logoutHandler = () => {
+    alert("로그아웃");
     setToken('');
+    setRefreshToken('');
     authAction.logoutActionHandler();
     if (logoutTimer) {
       clearTimeout(logoutTimer);
     }
-  }, []);
+    setIsSuccess(false);
+  };
+
+  // const logoutHandler = useCallback(() => {
+  //   alert("로그아웃");
+  //   setToken('');
+  //   authAction.logoutActionHandler();
+  //   if (logoutTimer) {
+  //     clearTimeout(logoutTimer);
+  //   }
+  // }, []);
 
   const getUserHandler = () => {
     setIsGetSuccess(false);
@@ -120,6 +163,7 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
     const data = authAction.changePasswordActionHandler(exPassword, newPassword, token);
     data.then((result) => {
       if (result !== null) {
+        alert("변경되었습니다.");
         setIsSuccess(true);
         logoutHandler();
       }
@@ -129,9 +173,13 @@ export const AuthContextProvider:React.FC<Props> = (props) => {
   useEffect(() => {
     if(tokenData) {
       console.log(tokenData.duration);
-      logoutTimer = setTimeout(logoutHandler, tokenData.duration);
+      if(tokenData.duration <= 1000) {
+        refreshHandler();
+      }else{
+        logoutTimer = setTimeout(refreshHandler, tokenData.duration);
+      }      
     }
-  }, [tokenData, logoutHandler]);
+  }, [tokenData, refreshHandler]);
 
 
   const contextValue = {
